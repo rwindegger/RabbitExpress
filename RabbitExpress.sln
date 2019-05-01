@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress", "RabbitExpr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.ExampleWorker", "RabbitExpress.ExampleWorker\RabbitExpress.ExampleWorker.csproj", "{B35EFF06-846B-424B-86D5-7CAA2F2659FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitExpress.ExampleShared", "RabbitExpress.ExampleShared\RabbitExpress.ExampleShared.csproj", "{10B3E95B-0929-4F4B-A43E-EE326092B93D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.ExampleShared", "RabbitExpress.ExampleShared\RabbitExpress.ExampleShared.csproj", "{10B3E95B-0929-4F4B-A43E-EE326092B93D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitExpress.ExamplePublisher", "RabbitExpress.ExamplePublisher\RabbitExpress.ExamplePublisher.csproj", "{C101FC21-3B09-420B-A683-FE94A547F2A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.ExamplePublisher", "RabbitExpress.ExamplePublisher\RabbitExpress.ExamplePublisher.csproj", "{C101FC21-3B09-420B-A683-FE94A547F2A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitExpress.JsonSerializer", "RabbitExpress.JsonSerializer\RabbitExpress.JsonSerializer.csproj", "{BD13DBE4-F0B2-4B22-817F-C52DB1591991}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C101FC21-3B09-420B-A683-FE94A547F2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C101FC21-3B09-420B-A683-FE94A547F2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C101FC21-3B09-420B-A683-FE94A547F2A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

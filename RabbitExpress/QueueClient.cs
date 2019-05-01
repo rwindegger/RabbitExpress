@@ -28,11 +28,9 @@
 // ***********************************************************************
 namespace RabbitExpress
 {
-    using Newtonsoft.Json;
     using RabbitMQ.Client;
     using System;
     using System.Linq;
-    using System.Text;
     using System.Threading;
 
     /// <summary>
@@ -40,17 +38,20 @@ namespace RabbitExpress
     /// Implements the <see cref="System.IDisposable" /> interface.
     /// </summary>
     /// <typeparam name="TQueues">The type that defines the queues.</typeparam>
+    /// <typeparam name="TSerializer">The type that defines the serializer.</typeparam>
     /// <seealso cref="System.IDisposable" />
-    public class QueueClient<TQueues>
+    public class QueueClient<TQueues, TSerializer>
         : IDisposable
         where TQueues : Enum
+        where TSerializer : IExpressSerializer, new()
     {
         private readonly IConnection _connection;
         private readonly IModel _model;
+        private readonly TSerializer _serializer;
         private bool _isRunning = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QueueClient{Queues}"/> class.
+        /// Initializes a new instance of the <see cref="QueueClient{Queues, TSerializer}"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         public QueueClient(Uri connectionString)
@@ -59,12 +60,15 @@ namespace RabbitExpress
             {
                 Uri = connectionString
             };
+
             _connection = factory.CreateConnection();
             _model = _connection.CreateModel();
 
-            var t = typeof(TQueues);
-            foreach(TQueues e in Enum.GetValues(t).Cast<TQueues>())
+            Type t = typeof(TQueues);
+            foreach (TQueues e in Enum.GetValues(t).Cast<TQueues>())
                 _model.QueueDeclare(Enum.GetName(t, e), true, false, false, null);
+
+            _serializer = new TSerializer();
         }
 
         /// <summary>
@@ -75,9 +79,7 @@ namespace RabbitExpress
         /// <param name="queue">The queue.</param>
         public void Publish<TMessage>(TMessage message, TQueues queue)
         {
-            var ser = JsonConvert.SerializeObject(message, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
-            var raw = Encoding.UTF8.GetBytes(ser);
-            _model.BasicPublish("", Enum.GetName(typeof(TQueues), queue), null, raw);
+            _model.BasicPublish("", Enum.GetName(typeof(TQueues), queue), null, _serializer.Serialize(message));
         }
 
         /// <summary>
@@ -126,7 +128,7 @@ namespace RabbitExpress
             {
                 if (_model.MessageCount(Enum.GetName(typeof(TQueues), queue)) > 0)
                 {
-                    var data = Get<TMessage>(queue);
+                    QueuedMessage<TMessage> data = Get<TMessage>(queue);
                     if (data == null) continue;
                     callback(data);
                 }
@@ -167,11 +169,12 @@ namespace RabbitExpress
             /// </summary>
             /// <value>The message.</value>
             public TMessage Message { get; internal set; }
+
             /// <summary>
             /// Gets the client the message was received on.
             /// </summary>
             /// <value>The client.</value>
-            public QueueClient<TQueues> Client { get; }
+            public QueueClient<TQueues, TSerializer> Client { get; }
 
             private readonly BasicGetResult _data;
             private volatile bool _isDisposed = false;
@@ -181,13 +184,11 @@ namespace RabbitExpress
             /// </summary>
             /// <param name="client">The client the message was delivered on.</param>
             /// <param name="data">The data delivered by RabbitMQ.</param>
-            internal QueuedMessage(QueueClient<TQueues> client, BasicGetResult data)
+            internal QueuedMessage(QueueClient<TQueues, TSerializer> client, BasicGetResult data)
             {
                 Client = client;
                 _data = data;
-
-                var raw = Encoding.UTF8.GetString(data.Body);
-                Message = JsonConvert.DeserializeObject<TMessage>(raw, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
+                Message = Client._serializer.Deserialize<TMessage>(data.Body);
             }
 
             /// <summary>
