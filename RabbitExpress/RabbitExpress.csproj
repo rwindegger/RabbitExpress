@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Rene Windegger</Authors>
     <Company>Rene Windegger</Company>
-    <Description>An easy to use RabbitMQ Client for .NET Standard.</Description>
+    <Description>An easy to use RabbitMQ Client for .Net.</Description>
     <PackageLicense>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicense>
     <PackageProjectUrl>https://github.com/rwindegger/RabbitExpress</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rwindegger/RabbitExpress</RepositoryUrl>
