@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,10 +6,15 @@
     <Authors>Rene Windegger</Authors>
     <Company>Rene Windegger</Company>
     <Description>An easy to use RabbitMQ Client for .NET Standard.</Description>
-    <PackageLicenseUrl>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicense>
     <PackageProjectUrl>https://github.com/rwindegger/RabbitExpress</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rwindegger/RabbitExpress</RepositoryUrl>
     <LangVersion>latest</LangVersion>
+	<Version>99.99.99.99</Version>
+	<PackageVersion>99.99.99.99</PackageVersion>
+	<AssemblyVersion>99.99.99.99</AssemblyVersion>
+	<FileVersion>99.99.99.99</FileVersion>
+	<InformationalVersion>99.99.99.99</InformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
