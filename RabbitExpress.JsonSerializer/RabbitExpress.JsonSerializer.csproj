@@ -8,7 +8,7 @@
     <Product>RabbitExpress</Product>
     <Description>A simple JSON serializer implementation for usage in RabbitExpress.</Description>
     <PackageLicenseUrl>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/rwindegger/RabbitExpress</PackageProjectUrl>
+    <PackageProjectUrl>https://rwindegger.github.io/RabbitExpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rwindegger/RabbitExpress</RepositoryUrl>
     <PackageTags>rabbitmq rabbitmq-client</PackageTags>
 	<Version>99.99.99.99</Version>

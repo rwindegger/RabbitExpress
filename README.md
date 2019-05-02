@@ -8,7 +8,7 @@ An easy to use RabbitMQ Client for .Net.
 
 ## How to install
 
-In the csproj add a PackageReference to the [RabbitExpress.JsonSerializer](../RabbitExpress.JsonSerializer/README.md) package.
+In the csproj add a PackageReference to the [RabbitExpress.JsonSerializer](RabbitExpress.JsonSerializer/README.md) package.
 
 ```xml
 <ItemGroup>

@@ -9,7 +9,7 @@
     <Description>An easy to use RabbitMQ Client for .Net.</Description>
 	<PackageLicenseUrl>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicenseUrl>
     <PackageLicense>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicense>
-    <PackageProjectUrl>https://github.com/rwindegger/RabbitExpress</PackageProjectUrl>
+    <PackageProjectUrl>https://rwindegger.github.io/RabbitExpress/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/rwindegger/RabbitExpress</RepositoryUrl>
     <LangVersion>latest</LangVersion>
 	<Version>99.99.99.99</Version>
