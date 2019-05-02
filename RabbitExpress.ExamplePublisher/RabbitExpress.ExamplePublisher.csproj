@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,12 +10,11 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+	<PackageReference Include="RabbitExpress.JsonSerializer" Version="*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RabbitExpress.ExampleShared\RabbitExpress.ExampleShared.csproj" />
-    <ProjectReference Include="..\RabbitExpress.JsonSerializer\RabbitExpress.JsonSerializer.csproj" />
-    <ProjectReference Include="..\RabbitExpress\RabbitExpress.csproj" />
   </ItemGroup>
 
   <ItemGroup>
