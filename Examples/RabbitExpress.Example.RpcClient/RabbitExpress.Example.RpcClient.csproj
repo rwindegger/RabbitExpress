@@ -13,9 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RabbitExpress.ExampleShared\RabbitExpress.ExampleShared.csproj" />
-    <ProjectReference Include="..\RabbitExpress.JsonSerializer\RabbitExpress.JsonSerializer.csproj" />
-    <ProjectReference Include="..\RabbitExpress\RabbitExpress.csproj" />
+    <ProjectReference Include="..\RabbitExpress.Example.Shared\RabbitExpress.Example.Shared.csproj" />
+    <ProjectReference Include="..\..\Serializers\RabbitExpress.Serializers.MsgPackSerializer\RabbitExpress.Serializers.MsgPackSerializer.csproj" />
   </ItemGroup>
 
 </Project>

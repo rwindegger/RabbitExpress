@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.ExampleWorker
+// Assembly         : RabbitExpress.Example.Worker
 // Author           : Rene Windegger
 // Created          : 04-30-2019
 //

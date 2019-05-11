@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.Example.Publisher
+// Assembly         : RabbitExpress.Example.RpcClient
 // Author           : Rene Windegger
-// Created          : 04-30-2019
+// Created          : 05-11-2019
 //
 // Last Modified By : Rene Windegger
-// Last Modified On : 04-30-2019
+// Last Modified On : 05-11-2019
 // ***********************************************************************
 // <copyright file="Program.cs" company="Rene Windegger">
 //     Copyright (c) Rene Windegger. All rights reserved.
@@ -26,7 +26,7 @@
 // along with this RabbitExpress. If not, see <http://www.gnu.org/licenses/>.
 // </summary>
 // ***********************************************************************
-namespace RabbitExpress.Example.Publisher
+namespace RabbitExpress.Example.RpcClient
 {
     using Microsoft.Extensions.Configuration;
     using Shared;
@@ -50,15 +50,14 @@ namespace RabbitExpress.Example.Publisher
                 .AddEnvironmentVariables()
                 .Build();
 
-            using (var qc = new QueueClient<Queues, JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
+            using (var qc = new QueueClient<Queues, MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                string message;
-                do
-                {
-                    Console.Write("Message: ");
-                    message = Console.ReadLine();
-                    qc.Publish(new ExampleMessage { Text = message }, Queues.EXAMPLE_QUEUE);
-                } while (message != "exit");
+                IExampleService client = qc.RpcClient<IExampleService>(Queues.RPC_QUEUE);
+                var input = new ExampleMessage { Text = "RabbitExpress Test" };
+                ExampleMessage msg = client.EncodeMessage(input);
+                Console.WriteLine(msg.Text);
+                ExampleMessage decmsg = client.DecodeMessage(msg);
+                Console.WriteLine(decmsg.Text);
             }
         }
     }

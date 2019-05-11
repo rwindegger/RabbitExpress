@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.JsonSerializer
+// Assembly         : RabbitExpress.Serializers.JsonSerializer
 // Author           : Rene Windegger
 // Created          : 05-01-2019
 //

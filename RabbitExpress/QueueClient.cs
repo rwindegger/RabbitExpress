@@ -26,9 +26,6 @@
 // along with this RabbitExpress. If not, see <http://www.gnu.org/licenses/>.
 // </summary>
 // ***********************************************************************
-
-using RabbitMQ.Client.MessagePatterns;
-
 namespace RabbitExpress
 {
     using RabbitMQ.Client;

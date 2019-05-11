@@ -1,9 +1,9 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.MsgPackSerializer
-// Author           : ReneWindegger
+// Assembly         : RabbitExpress.Serializers.MsgPackSerializer
+// Author           : Rene Windegger
 // Created          : 05-11-2019
 //
-// Last Modified By : ReneWindegger
+// Last Modified By : Rene Windegger
 // Last Modified On : 05-11-2019
 // ***********************************************************************
 // <copyright file="MsgPackSerializer.cs" company="Rene Windegger">
