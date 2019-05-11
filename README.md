@@ -8,25 +8,25 @@ An easy to use RabbitMQ Client for .Net.
 
 ## How to install
 
-In the csproj add a PackageReference to the [RabbitExpress.JsonSerializer](RabbitExpress.JsonSerializer/README.md) or the [RabbitExpress.MsgPackSerializer](RabbitExpress.MsgPackSerializer/README.md) package.
+In the csproj add a PackageReference to the [RabbitExpress.Serializers.JsonSerializer](Serializers/RabbitExpress.Serializers.JsonSerializer/README.md)
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="RabbitExpress.JsonSerializer" Version="*" />
+    <PackageReference Include="RabbitExpress.Serializers.JsonSerializer" Version="1.*" />
 </ItemGroup>
 ```
-
+ or the [RabbitExpress.Serializers.MsgPackSerializer](Serializers/RabbitExpress.Serializers.MsgPackSerializer/README.md) package.
 ```xml
 <ItemGroup>
-    <PackageReference Include="RabbitExpress.MsgPackSerializer" Version="*" />
+    <PackageReference Include="RabbitExpress.Serializers.MsgPackSerializer" Version="1.*" />
 </ItemGroup>
 ```
 
 ## Publisher usage
 
-For a simple example of a publisher see [RabbitExpress.ExamplePublisher](RabbitExpress.ExamplePublisher/README.md).
+For a simple example of a publisher see [RabbitExpress.Example.Publisher](Examples/RabbitExpress.Example.Publisher/README.md).
 
 ## Worker usage
 
-For a simple worker implementation see [RabbitExpress.ExampleWorker](RabbitExpress.ExampleWorker/README.md).
+For a simple worker implementation see [RabbitExpress.Example.Worker](Examples/RabbitExpress.Example.Worker/README.md).
 

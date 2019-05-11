@@ -6,21 +6,25 @@
 		<Authors>Rene Windegger</Authors>
 		<Company>Rene Windegger</Company>
 		<Product>RabbitExpress</Product>
-		<Description>An easy to use RabbitMQ Client for .Net.</Description>
+		<Description>A simple JSON serializer implementation for usage in RabbitExpress.</Description>
 		<PackageLicenseUrl>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicenseUrl>
-		<PackageLicense>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicense>
 		<PackageProjectUrl>https://rwindegger.github.io/RabbitExpress/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/rwindegger/RabbitExpress</RepositoryUrl>
-		<LangVersion>latest</LangVersion>
+		<PackageTags>rabbitmq rabbitmq-client</PackageTags>
 		<Version>99.99.99.99</Version>
 		<PackageVersion>99.99.99.99</PackageVersion>
 		<AssemblyVersion>99.99.99.99</AssemblyVersion>
 		<FileVersion>99.99.99.99</FileVersion>
 		<InformationalVersion>99.99.99.99</InformationalVersion>
+		<RootNamespace>RabbitExpress</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\RabbitExpress\RabbitExpress.csproj" />
 	</ItemGroup>
 
 </Project>
