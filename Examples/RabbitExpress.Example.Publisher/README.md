@@ -1,20 +1,26 @@
 # Example Publisher
 
-This project makes use of the [RabbitExpress.QueueClient](../RabbitExpress/README.md) and utilizes the [RabbitExpress.JsonSerializer](../RabbitExpress.JsonSerializer/README.md) when communicating with the queue.
+This project makes use of the [RabbitExpress.QueueClient](../../RabbitExpress/README.md) and utilizes the [RabbitExpress.Serializers.JsonSerializer](../../Serializers/RabbitExpress.Serializers.JsonSerializer/README.md) when communicating with the queue.
 
 ## Add the reference
 
-In the csproj add a PackageReference to the [RabbitExpress.JsonSerializer](../RabbitExpress.JsonSerializer/README.md) package.
+In the csproj add a PackageReference to the [RabbitExpress.Serializers.JsonSerializer](../../Serializers/RabbitExpress.Serializers.JsonSerializer/README.md)
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="RabbitExpress.JsonSerializer" Version="*" />
+    <PackageReference Include="RabbitExpress.Serializers.JsonSerializer" Version="1.*" />
+</ItemGroup>
+```
+ or the [RabbitExpress.Serializers.MsgPackSerializer](../../Serializers/RabbitExpress.Serializers.MsgPackSerializer/README.md) package.
+```xml
+<ItemGroup>
+    <PackageReference Include="RabbitExpress.Serializers.MsgPackSerializer" Version="1.*" />
 </ItemGroup>
 ```
 
 ## A simple publisher
 
-The main code makes use of predefined messages and queues. See [RabbitExpress.ExampleShared](../RabbitExpress.ExampleShared/README.md) for details.
+The main code makes use of predefined messages and queues. See [RabbitExpress.Example.Shared](../RabbitExpress.Example.Shared/README.md) for details.
 
 Making use of the the publisher is as simple as:
 
