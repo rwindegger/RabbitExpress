@@ -26,6 +26,9 @@
 // along with this RabbitExpress. If not, see <http://www.gnu.org/licenses/>.
 // </summary>
 // ***********************************************************************
+
+using RabbitMQ.Client.MessagePatterns;
+
 namespace RabbitExpress
 {
     using RabbitMQ.Client;
@@ -156,6 +159,16 @@ namespace RabbitExpress
             _connection?.Dispose();
         }
 
+        public TInterface RpcClient<TInterface>(TQueues queue)
+        {
+            return default(TInterface);
+        }
+
+        public void RpcServer<TCallback>(TQueues queue, TCallback @interface, TCallback implementation)
+        {
+
+        }
+        
         /// <summary>
         /// The QueuedMessage class is the message wrapper that is used for actual storage in RabbitMQ.
         /// Implements the <see cref="System.IDisposable" /> interface.

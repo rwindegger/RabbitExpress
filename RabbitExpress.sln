@@ -5,19 +5,19 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress", "RabbitExpress\RabbitExpress.csproj", "{67C6ED19-422C-4FE3-8C8C-2E17F1E2E3CF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serializers", "Serializers", "{CAB437CE-9338-4145-B3DB-CFDCD582F5AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.ExampleWorker", "RabbitExpress.ExampleWorker\RabbitExpress.ExampleWorker.csproj", "{B35EFF06-846B-424B-86D5-7CAA2F2659FA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{A2FD14D5-4A44-4E41-8BC1-A1053B66B13C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.ExampleShared", "RabbitExpress.ExampleShared\RabbitExpress.ExampleShared.csproj", "{10B3E95B-0929-4F4B-A43E-EE326092B93D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.Serializers.JsonSerializer", "Serializers\RabbitExpress.Serializers.JsonSerializer\RabbitExpress.Serializers.JsonSerializer.csproj", "{C8469F9C-9733-4C6E-9C5F-904910EED664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.ExamplePublisher", "RabbitExpress.ExamplePublisher\RabbitExpress.ExamplePublisher.csproj", "{C101FC21-3B09-420B-A683-FE94A547F2A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.Serializers.MsgPackSerializer", "Serializers\RabbitExpress.Serializers.MsgPackSerializer\RabbitExpress.Serializers.MsgPackSerializer.csproj", "{D46971F3-7D55-4520-A605-42D132E8EEBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.JsonSerializer", "RabbitExpress.JsonSerializer\RabbitExpress.JsonSerializer.csproj", "{BD13DBE4-F0B2-4B22-817F-C52DB1591991}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.Example.Shared", "Examples\RabbitExpress.Example.Shared\RabbitExpress.Example.Shared.csproj", "{794160DF-3896-44D6-861C-7933AEF12EAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.ExampleRpcClient", "RabbitExpress.ExampleRpcClient\RabbitExpress.ExampleRpcClient.csproj", "{839C0363-C393-4C3A-BD88-BDCBF468F20B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.Example.Worker", "Examples\RabbitExpress.Example.Worker\RabbitExpress.Example.Worker.csproj", "{C4AF81B1-CF6E-4C40-B490-2D3E5EBE1571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.Example.RpcServer", "RabbitExpress.Example.RpcServer\RabbitExpress.Example.RpcServer.csproj", "{E2028138-C413-4B90-9305-67E7AA1826BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitExpress.Example.Publisher", "Examples\RabbitExpress.Example.Publisher\RabbitExpress.Example.Publisher.csproj", "{66E3420B-0CDD-46A7-8888-253F8254A7A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitExpress.MsgPackSerializer", "RabbitExpress.MsgPackSerializer\RabbitExpress.MsgPackSerializer.csproj", "{0662DB08-D603-4023-B9F2-D3E7A756130C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,36 +29,37 @@ Global
 		{67C6ED19-422C-4FE3-8C8C-2E17F1E2E3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67C6ED19-422C-4FE3-8C8C-2E17F1E2E3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67C6ED19-422C-4FE3-8C8C-2E17F1E2E3CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C8469F9C-9733-4C6E-9C5F-904910EED664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8469F9C-9733-4C6E-9C5F-904910EED664}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8469F9C-9733-4C6E-9C5F-904910EED664}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8469F9C-9733-4C6E-9C5F-904910EED664}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D46971F3-7D55-4520-A605-42D132E8EEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D46971F3-7D55-4520-A605-42D132E8EEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D46971F3-7D55-4520-A605-42D132E8EEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D46971F3-7D55-4520-A605-42D132E8EEBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{794160DF-3896-44D6-861C-7933AEF12EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{794160DF-3896-44D6-861C-7933AEF12EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{794160DF-3896-44D6-861C-7933AEF12EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{794160DF-3896-44D6-861C-7933AEF12EAA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4AF81B1-CF6E-4C40-B490-2D3E5EBE1571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4AF81B1-CF6E-4C40-B490-2D3E5EBE1571}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4AF81B1-CF6E-4C40-B490-2D3E5EBE1571}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4AF81B1-CF6E-4C40-B490-2D3E5EBE1571}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66E3420B-0CDD-46A7-8888-253F8254A7A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66E3420B-0CDD-46A7-8888-253F8254A7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66E3420B-0CDD-46A7-8888-253F8254A7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66E3420B-0CDD-46A7-8888-253F8254A7A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35EFF06-846B-424B-86D5-7CAA2F2659FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35EFF06-846B-424B-86D5-7CAA2F2659FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35EFF06-846B-424B-86D5-7CAA2F2659FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35EFF06-846B-424B-86D5-7CAA2F2659FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B3E95B-0929-4F4B-A43E-EE326092B93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B3E95B-0929-4F4B-A43E-EE326092B93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B3E95B-0929-4F4B-A43E-EE326092B93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B3E95B-0929-4F4B-A43E-EE326092B93D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C101FC21-3B09-420B-A683-FE94A547F2A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C101FC21-3B09-420B-A683-FE94A547F2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C101FC21-3B09-420B-A683-FE94A547F2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C101FC21-3B09-420B-A683-FE94A547F2A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD13DBE4-F0B2-4B22-817F-C52DB1591991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{839C0363-C393-4C3A-BD88-BDCBF468F20B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{839C0363-C393-4C3A-BD88-BDCBF468F20B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{839C0363-C393-4C3A-BD88-BDCBF468F20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{839C0363-C393-4C3A-BD88-BDCBF468F20B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2028138-C413-4B90-9305-67E7AA1826BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2028138-C413-4B90-9305-67E7AA1826BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2028138-C413-4B90-9305-67E7AA1826BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2028138-C413-4B90-9305-67E7AA1826BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0662DB08-D603-4023-B9F2-D3E7A756130C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0662DB08-D603-4023-B9F2-D3E7A756130C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0662DB08-D603-4023-B9F2-D3E7A756130C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0662DB08-D603-4023-B9F2-D3E7A756130C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C8469F9C-9733-4C6E-9C5F-904910EED664} = {CAB437CE-9338-4145-B3DB-CFDCD582F5AC}
-		{D46971F3-7D55-4520-A605-42D132E8EEBA} = {CAB437CE-9338-4145-B3DB-CFDCD582F5AC}
-		{794160DF-3896-44D6-861C-7933AEF12EAA} = {A2FD14D5-4A44-4E41-8BC1-A1053B66B13C}
-		{C4AF81B1-CF6E-4C40-B490-2D3E5EBE1571} = {A2FD14D5-4A44-4E41-8BC1-A1053B66B13C}
-		{66E3420B-0CDD-46A7-8888-253F8254A7A4} = {A2FD14D5-4A44-4E41-8BC1-A1053B66B13C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF70BF27-3349-4C09-AE71-10DA8DAC2225}

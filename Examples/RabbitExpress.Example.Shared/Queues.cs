@@ -36,6 +36,10 @@ namespace RabbitExpress.Example.Shared
         /// <summary>
         /// The example queue
         /// </summary>
-        EXAMPLE_QUEUE
+        EXAMPLE_QUEUE,
+        /// <summary>
+        /// The RPC queue
+        /// </summary>
+        RPC_QUEUE
     }
 }
