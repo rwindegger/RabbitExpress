@@ -8,13 +8,13 @@ In your csproj add a PackageReference to this package.
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="RabbitExpress.MsgPackSerializer" Version="*" />
+    <PackageReference Include="RabbitExpress.Serializers.MsgPackSerializer" Version="1.*" />
 </ItemGroup>
 ```
 
 ## The serializer
 
-This is a very simple serializer to be used in the [RabbitExpress.QueueClient](../RabbitExpress/README.md). The implementation uses [MsgPack.Cli](https://msgpack.org/index.html) to serialize and deserialize the transfered messages.
+This is a very simple serializer to be used in the [RabbitExpress.QueueClient](../../RabbitExpress/README.md). The implementation uses [MsgPack.Cli](https://msgpack.org/index.html) to serialize and deserialize the transfered messages.
 
 ```c-sharp
     public class MsgPackSerializer : IExpressSerializer

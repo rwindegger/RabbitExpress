@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.ExampleWorker
+// Assembly         : RabbitExpress.ExamplePublisher
 // Author           : Rene Windegger
 // Created          : 04-30-2019
 //
@@ -26,10 +26,10 @@
 // along with this RabbitExpress. If not, see <http://www.gnu.org/licenses/>.
 // </summary>
 // ***********************************************************************
-namespace RabbitExpress.ExampleWorker
+namespace RabbitExpress.Example.Publisher
 {
-    using ExampleShared;
     using Microsoft.Extensions.Configuration;
+    using Shared;
     using System;
     using System.IO;
 
@@ -50,38 +50,15 @@ namespace RabbitExpress.ExampleWorker
                 .AddEnvironmentVariables()
                 .Build();
 
-            var r = new Random();
             using (var qc = new QueueClient<Queues, JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                qc.WatchQueue<ExampleMessage>(Queues.EXAMPLE_QUEUE, m =>
+                string message;
+                do
                 {
-                    try
-                    {
-                        if (string.IsNullOrWhiteSpace(m.Message?.Text))
-                        {
-                            Console.WriteLine("Rejecting empty message.");
-                            m.Reject(false);
-                            return;
-                        }
-
-                        if (r.Next(100) % 3 == 0)
-                        {
-                            throw new ApplicationException("Simulated recoverable error.");
-                        }
-
-                        Console.WriteLine($"Acknowledging {m.Message.Text}");
-                        m.Acknowledge();
-                        if (m.Message.Text == "exit")
-                        {
-                            m.Client.StopWatch();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine($"Rejecting {m.Message?.Text} with reason: {e}");
-                        m.Reject();
-                    }
-                });
+                    Console.Write("Message: ");
+                    message = Console.ReadLine();
+                    qc.Publish(new ExampleMessage { Text = message }, Queues.EXAMPLE_QUEUE);
+                } while (message != "exit");
             }
         }
     }

@@ -6,7 +6,7 @@
 // Last Modified By : Rene Windegger
 // Last Modified On : 04-30-2019
 // ***********************************************************************
-// <copyright file="Queues.cs" company="Rene Windegger">
+// <copyright file="ExampleMessage.cs" company="Rene Windegger">
 //     Copyright (c) Rene Windegger. All rights reserved.
 // </copyright>
 // <summary>
@@ -26,16 +26,17 @@
 // along with this RabbitExpress. If not, see <http://www.gnu.org/licenses/>.
 // </summary>
 // ***********************************************************************
-namespace RabbitExpress.ExampleShared
+namespace RabbitExpress.Example.Shared
 {
     /// <summary>
-    /// Enum Queues
+    /// Class ExampleMessage.
     /// </summary>
-    public enum Queues
+    public class ExampleMessage
     {
         /// <summary>
-        /// The example queue
+        /// Gets or sets the text.
         /// </summary>
-        EXAMPLE_QUEUE
+        /// <value>The text.</value>
+        public string Text { get; set; }
     }
 }
