@@ -51,9 +51,9 @@ namespace RabbitExpress.Example.Worker
                 .Build();
 
             var r = new Random();
-            using (var qc = new QueueClient<Queues, JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
+            using (var qc = new QueueClient<JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                qc.RegisterWorker<ExampleMessage>(Queues.EXAMPLE_QUEUE, m =>
+                qc.RegisterWorker<Queues, ExampleMessage>(Queues.EXAMPLE_QUEUE, m =>
                 {
                     try
                     {

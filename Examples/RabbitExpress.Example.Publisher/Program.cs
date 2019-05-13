@@ -50,14 +50,14 @@ namespace RabbitExpress.Example.Publisher
                 .AddEnvironmentVariables()
                 .Build();
 
-            using (var qc = new QueueClient<Queues, JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
+            using (var qc = new QueueClient<JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
                 string message;
                 do
                 {
                     Console.Write("Message: ");
                     message = Console.ReadLine();
-                    qc.Publish(new ExampleMessage { Text = message }, Queues.EXAMPLE_QUEUE);
+                    qc.Publish(Queues.EXAMPLE_QUEUE, new ExampleMessage { Text = message });
                 } while (message != "exit");
             }
         }

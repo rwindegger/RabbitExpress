@@ -47,13 +47,11 @@ namespace RabbitExpress
     /// The QueueClient class provides a simple way to access RabbitMQ.
     /// Implements the <see cref="System.IDisposable" /> interface.
     /// </summary>
-    /// <typeparam name="TQueues">The type that defines the queues.</typeparam>
     /// <typeparam name="TSerializer">The type that defines the serializer.</typeparam>
     /// <seealso cref="System.IDisposable" />
-    public class QueueClient<TQueues, TSerializer>
+    public class QueueClient<TSerializer>
         : IDisposable
         , IInterceptor
-        where TQueues : Enum
         where TSerializer : IExpressSerializer, new()
     {
         private const string Exchange = "RabbitExpress";
@@ -69,7 +67,6 @@ namespace RabbitExpress
         private readonly IModel _model;
         private readonly TSerializer _serializer;
         private readonly AsyncEventingBasicConsumer _consumer;
-
 
         private void HandleMessage(Func<byte[], WorkerResult> handler, BasicDeliverEventArgs @event)
         {
@@ -167,7 +164,7 @@ namespace RabbitExpress
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="QueueClient{Queues, TSerializer}"/> class.
+        /// Initializes a new instance of the <see cref="QueueClient{TSerializer}"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         public QueueClient(Uri connectionString)
@@ -198,14 +195,15 @@ namespace RabbitExpress
             _serializer = new TSerializer();
         }
 
-
         /// <summary>
         /// Registers the worker.
         /// </summary>
+        /// <typeparam name="TQueues">The type that defines the queues.</typeparam>
         /// <typeparam name="TMessage">The type of the t message.</typeparam>
         /// <param name="queue">The queue.</param>
         /// <param name="callback">The callback.</param>
-        public void RegisterWorker<TMessage>(TQueues queue, Func<QueuedMessage<TMessage>, WorkerResult> callback)
+        public void RegisterWorker<TQueues, TMessage>(TQueues queue, Func<QueuedMessage<TMessage>, WorkerResult> callback)
+            where TQueues : Enum
         {
             var queueName = Enum.GetName(typeof(TQueues), queue);
 
@@ -240,7 +238,9 @@ namespace RabbitExpress
         /// <typeparam name="TMessage">The type of the message.</typeparam>
         /// <param name="message">The message.</param>
         /// <param name="queue">The queue.</param>
-        public void Publish<TMessage>(TMessage message, TQueues queue)
+        /// <typeparam name="TQueues">The type that defines the queues.</typeparam>
+        public void Publish<TQueues, TMessage>(TQueues queue, TMessage message)
+            where TQueues : Enum
         {
             var queueName = Enum.GetName(typeof(TQueues), queue);
             var props = new BasicProperties
@@ -416,8 +416,7 @@ namespace RabbitExpress
         /// Implements the <see cref="System.IDisposable" /> interface.
         /// </summary>
         /// <typeparam name="TMessage">The type of the message.</typeparam>
-        /// <seealso cref="System.IDisposable" />
-        public class QueuedMessage<TMessage> : IDisposable
+        public class QueuedMessage<TMessage>
         {
             /// <summary>
             /// Gets the message.
@@ -429,59 +428,23 @@ namespace RabbitExpress
             /// Gets the client the message was received on.
             /// </summary>
             /// <value>The client.</value>
-            public QueueClient<TQueues, TSerializer> Client { get; }
+            public QueueClient<TSerializer> Client { get; }
 
-            private readonly BasicDeliverEventArgs _data;
-            private volatile bool _isDisposed = false;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="QueuedMessage{TMessage}"/> class.
             /// </summary>
             /// <param name="client">The client the message was delivered on.</param>
             /// <param name="data">The data delivered by RabbitMQ.</param>
-            internal QueuedMessage(QueueClient<TQueues, TSerializer> client, BasicDeliverEventArgs data)
+            internal QueuedMessage(QueueClient<TSerializer> client, BasicDeliverEventArgs data)
             {
                 Client = client;
-                _data = data;
                 Message = Client._serializer.Deserialize<TMessage>(data.Body);
-            }
-
-            /// <summary>
-            /// Acknowledges this message.
-            /// </summary>
-            /// <exception cref="ObjectDisposedException">TMessage</exception>
-            public void Acknowledge()
-            {
-                if (_isDisposed)
-                    throw new ObjectDisposedException(nameof(QueuedMessage<TMessage>));
-                Client.Acknowledge(_data.DeliveryTag);
-                Dispose();
-            }
-
-            /// <summary>
-            /// Rejects this message.
-            /// </summary>
-            /// <param name="requeue">if set to <c>true</c> the rejected message is requeued.</param>
-            /// <exception cref="ObjectDisposedException">TMessage</exception>
-            public void Reject(bool requeue = true)
-            {
-                if (_isDisposed)
-                    throw new ObjectDisposedException(nameof(QueuedMessage<TMessage>));
-                Client.Reject(_data.DeliveryTag, requeue);
-                Dispose();
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public void Dispose()
-            {
-                _isDisposed = true;
             }
         }
 
         /// <summary>
-        /// Class RpcRequest.
+        /// The RpcRequest class ia the message wrapper that is used to pass RPC Arguments.
         /// </summary>
         public class RpcRequest
         {

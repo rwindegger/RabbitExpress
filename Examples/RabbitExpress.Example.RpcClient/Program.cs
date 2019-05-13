@@ -50,7 +50,7 @@ namespace RabbitExpress.Example.RpcClient
                 .AddEnvironmentVariables()
                 .Build();
 
-            using (var qc = new QueueClient<Queues, MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
+            using (var qc = new QueueClient<MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
                 IExampleService client = qc.RpcClient<IExampleService>();
                 var input = new ExampleMessage { Text = "RabbitExpress Test" };
