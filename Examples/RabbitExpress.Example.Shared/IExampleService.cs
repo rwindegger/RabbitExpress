@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
 // Assembly         : RabbitExpress.Example.Shared
 // Author           : Rene Windegger
-// Created          : 04-30-2019
+// Created          : 05-11-2019
 //
 // Last Modified By : Rene Windegger
-// Last Modified On : 04-30-2019
+// Last Modified On : 05-11-2019
 // ***********************************************************************
-// <copyright file="Queues.cs" company="Rene Windegger">
+// <copyright file="IExampleService.cs" company="Rene Windegger">
 //     Copyright (c) Rene Windegger. All rights reserved.
 // </copyright>
 // <summary>
@@ -29,13 +29,33 @@
 namespace RabbitExpress.Example.Shared
 {
     /// <summary>
-    /// Enum Queues
+    /// Interface IExampleService
     /// </summary>
-    public enum Queues
+    public interface IExampleService
     {
         /// <summary>
-        /// The example queue
+        /// Encodes the message.
         /// </summary>
-        EXAMPLE_QUEUE
+        /// <param name="message">The message.</param>
+        /// <returns>ExampleMessage.</returns>
+        ExampleMessage EncodeMessage(ExampleMessage message);
+        /// <summary>
+        /// Decodes the message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>ExampleMessage.</returns>
+        ExampleMessage DecodeMessage(ExampleMessage message);
+
+        /// <summary>Calculates the specified number1.</summary>
+        /// <param name="number1">The number1.</param>
+        /// <param name="number2">The number2.</param>
+        /// <returns>System.String.</returns>
+        string Calculate(int number1, int number2);
+
+        /// <summary>
+        /// Processes the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        void Process(ExampleMessage message);
     }
 }

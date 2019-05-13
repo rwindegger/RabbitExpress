@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.ExampleShared
+// Assembly         : RabbitExpress.Example.Shared
 // Author           : Rene Windegger
 // Created          : 04-30-2019
 //

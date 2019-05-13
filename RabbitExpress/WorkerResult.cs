@@ -1,12 +1,12 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.Example.Shared
+// Assembly         : RabbitExpress
 // Author           : Rene Windegger
-// Created          : 04-30-2019
+// Created          : 05-13-2019
 //
 // Last Modified By : Rene Windegger
-// Last Modified On : 04-30-2019
+// Last Modified On : 05-13-2019
 // ***********************************************************************
-// <copyright file="Queues.cs" company="Rene Windegger">
+// <copyright file="WorkerResult.cs" company="Rene Windegger">
 //     Copyright (c) Rene Windegger. All rights reserved.
 // </copyright>
 // <summary>
@@ -26,16 +26,24 @@
 // along with this RabbitExpress. If not, see <http://www.gnu.org/licenses/>.
 // </summary>
 // ***********************************************************************
-namespace RabbitExpress.Example.Shared
+namespace RabbitExpress
 {
     /// <summary>
-    /// Enum Queues
+    /// Used to indicate the outcome of the worker task.
     /// </summary>
-    public enum Queues
+    public enum WorkerResult
     {
         /// <summary>
-        /// The example queue
+        /// Indicates success
         /// </summary>
-        EXAMPLE_QUEUE
+        Success,
+        /// <summary>
+        /// Indicates requeue
+        /// </summary>
+        Requeue,
+        /// <summary>
+        /// Indicates failed
+        /// </summary>
+        Failed
     }
 }

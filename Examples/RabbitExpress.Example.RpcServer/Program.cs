@@ -1,10 +1,10 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.Example.Publisher
+// Assembly         : RabbitExpress.Example.RpcServer
 // Author           : Rene Windegger
-// Created          : 04-30-2019
+// Created          : 05-11-2019
 //
 // Last Modified By : Rene Windegger
-// Last Modified On : 04-30-2019
+// Last Modified On : 05-11-2019
 // ***********************************************************************
 // <copyright file="Program.cs" company="Rene Windegger">
 //     Copyright (c) Rene Windegger. All rights reserved.
@@ -26,12 +26,13 @@
 // along with this RabbitExpress. If not, see <http://www.gnu.org/licenses/>.
 // </summary>
 // ***********************************************************************
-namespace RabbitExpress.Example.Publisher
+namespace RabbitExpress.Example.RpcServer
 {
     using Microsoft.Extensions.Configuration;
     using Shared;
     using System;
     using System.IO;
+    using System.Text;
 
     /// <summary>
     /// Class Program.
@@ -50,15 +51,28 @@ namespace RabbitExpress.Example.Publisher
                 .AddEnvironmentVariables()
                 .Build();
 
-            using (var qc = new QueueClient<JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
+            using (var qc = new QueueClient<MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                string message;
-                do
+                qc.RpcServer<IExampleService>(x => x.Calculate(1, 2), new Func<int, int, string>((i1, i2) =>
                 {
-                    Console.Write("Message: ");
-                    message = Console.ReadLine();
-                    qc.Publish(Queues.EXAMPLE_QUEUE, new ExampleMessage { Text = message });
-                } while (message != "exit");
+                    Console.WriteLine($"Calculating {i1} + {i2}");
+                    return (i1 + i2).ToString();
+                }));
+                qc.RpcServer<IExampleService>(x => x.Process(new ExampleMessage()), new Action<ExampleMessage>(m =>
+                {
+                    Console.WriteLine($"Process {m.Text}");
+                }));
+                qc.RpcServer<IExampleService>(x => x.EncodeMessage(new ExampleMessage()), new Func<ExampleMessage, ExampleMessage>(m =>
+                {
+                    Console.WriteLine($"Encoding {m.Text}");
+                    return new ExampleMessage() { Text = Convert.ToBase64String(Encoding.UTF8.GetBytes(m.Text)) };
+                }));
+                qc.RpcServer<IExampleService>(x => x.DecodeMessage(new ExampleMessage()), new Func<ExampleMessage, ExampleMessage>(m =>
+                {
+                    Console.WriteLine($"Decoding {m.Text}");
+                    return new ExampleMessage() { Text = Encoding.UTF8.GetString(Convert.FromBase64String(m.Text)) };
+                }));
+                Console.ReadLine();
             }
         }
     }

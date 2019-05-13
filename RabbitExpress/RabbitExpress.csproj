@@ -20,7 +20,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Castle.Core" Version="4.4.0" />
 		<PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
+		<PackageReference Include="MsgPack.Cli" Version="1.0.1" />
 	</ItemGroup>
 
 </Project>

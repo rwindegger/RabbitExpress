@@ -1,5 +1,5 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.ExampleWorker
+// Assembly         : RabbitExpress.Example.Worker
 // Author           : Rene Windegger
 // Created          : 04-30-2019
 //
@@ -51,17 +51,16 @@ namespace RabbitExpress.Example.Worker
                 .Build();
 
             var r = new Random();
-            using (var qc = new QueueClient<Queues, JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
+            using (var qc = new QueueClient<JsonSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                qc.WatchQueue<ExampleMessage>(Queues.EXAMPLE_QUEUE, m =>
+                qc.RegisterWorker<Queues, ExampleMessage>(Queues.EXAMPLE_QUEUE, m =>
                 {
                     try
                     {
                         if (string.IsNullOrWhiteSpace(m.Message?.Text))
                         {
                             Console.WriteLine("Rejecting empty message.");
-                            m.Reject(false);
-                            return;
+                            return WorkerResult.Failed;
                         }
 
                         if (r.Next(100) % 3 == 0)
@@ -70,18 +69,15 @@ namespace RabbitExpress.Example.Worker
                         }
 
                         Console.WriteLine($"Acknowledging {m.Message.Text}");
-                        m.Acknowledge();
-                        if (m.Message.Text == "exit")
-                        {
-                            m.Client.StopWatch();
-                        }
+                        return WorkerResult.Success;
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine($"Rejecting {m.Message?.Text} with reason: {e}");
-                        m.Reject();
+                        return WorkerResult.Requeue;
                     }
                 });
+                Console.ReadLine();
             }
         }
     }

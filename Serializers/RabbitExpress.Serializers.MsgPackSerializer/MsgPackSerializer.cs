@@ -1,9 +1,9 @@
 ﻿// ***********************************************************************
-// Assembly         : RabbitExpress.MsgPackSerializer
-// Author           : ReneWindegger
+// Assembly         : RabbitExpress.Serializers.MsgPackSerializer
+// Author           : Rene Windegger
 // Created          : 05-11-2019
 //
-// Last Modified By : ReneWindegger
+// Last Modified By : Rene Windegger
 // Last Modified On : 05-11-2019
 // ***********************************************************************
 // <copyright file="MsgPackSerializer.cs" company="Rene Windegger">
@@ -53,11 +53,24 @@ namespace RabbitExpress
         /// <returns>TObject.</returns>
         public TObject Deserialize<TObject>(byte[] data)
         {
-            var responseSerializer = SerializerCache.GetOrAdd(typeof(TObject), MessagePackSerializer.Get<TObject>()) as MessagePackSerializer<TObject>;
-            if (responseSerializer != null)
+            if (SerializerCache.GetOrAdd(typeof(TObject), MessagePackSerializer.Get<TObject>()) is MessagePackSerializer<TObject> responseSerializer)
                 return responseSerializer.UnpackSingleObject(data);
 
             return default(TObject);
+        }
+
+        /// <summary>
+        /// Deserializes the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Object.</returns>
+        public object Deserialize(Type type, byte[] data)
+        {
+            if (SerializerCache.GetOrAdd(type, MessagePackSerializer.Get(type)) is MessagePackSerializer responseSerializer)
+                return responseSerializer.UnpackSingleObject(data);
+
+            return default(object);
         }
 
         /// <summary>
