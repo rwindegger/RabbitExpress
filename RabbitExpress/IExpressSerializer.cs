@@ -28,6 +28,8 @@
 // ***********************************************************************
 namespace RabbitExpress
 {
+    using System;
+
     /// <summary>
     /// Interface IExpressSerializer
     /// </summary>
@@ -40,6 +42,14 @@ namespace RabbitExpress
         /// <param name="data">The data.</param>
         /// <returns>TObject.</returns>
         TObject Deserialize<TObject>(byte[] data);
+
+        /// <summary>
+        /// Deserializes the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Object.</returns>
+        object Deserialize(Type type, byte[] data);
 
         /// <summary>
         /// Serializes the specified value.

@@ -52,12 +52,15 @@ namespace RabbitExpress.Example.RpcClient
 
             using (var qc = new QueueClient<Queues, MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                IExampleService client = qc.RpcClient<IExampleService>(Queues.RPC_QUEUE);
+                IExampleService client = qc.RpcClient<IExampleService>();
                 var input = new ExampleMessage { Text = "RabbitExpress Test" };
+                client.Process(input);
+                Console.WriteLine(client.Calculate(2, 4));
                 ExampleMessage msg = client.EncodeMessage(input);
                 Console.WriteLine(msg.Text);
                 ExampleMessage decmsg = client.DecodeMessage(msg);
                 Console.WriteLine(decmsg.Text);
+                Console.ReadLine();
             }
         }
     }

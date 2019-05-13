@@ -29,6 +29,7 @@
 namespace RabbitExpress
 {
     using Newtonsoft.Json;
+    using System;
     using System.Text;
 
     /// <summary>
@@ -49,6 +50,18 @@ namespace RabbitExpress
             var raw = Encoding.UTF8.GetString(data);
             return JsonConvert.DeserializeObject<TObject>(raw,
                 new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
+        }
+
+        /// <summary>
+        /// Deserializes the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>System.Object.</returns>
+        public object Deserialize(Type type, byte[] data)
+        {
+            var raw = Encoding.UTF8.GetString(data);
+            return JsonConvert.DeserializeObject(raw, type, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
         }
 
         /// <summary>

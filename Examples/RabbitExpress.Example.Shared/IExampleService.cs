@@ -45,5 +45,17 @@ namespace RabbitExpress.Example.Shared
         /// <param name="message">The message.</param>
         /// <returns>ExampleMessage.</returns>
         ExampleMessage DecodeMessage(ExampleMessage message);
+
+        /// <summary>Calculates the specified number1.</summary>
+        /// <param name="number1">The number1.</param>
+        /// <param name="number2">The number2.</param>
+        /// <returns>System.String.</returns>
+        string Calculate(int number1, int number2);
+
+        /// <summary>
+        /// Processes the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        void Process(ExampleMessage message);
     }
 }

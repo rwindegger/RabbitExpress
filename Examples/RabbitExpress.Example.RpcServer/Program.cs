@@ -32,6 +32,7 @@ namespace RabbitExpress.Example.RpcServer
     using Shared;
     using System;
     using System.IO;
+    using System.Text;
 
     /// <summary>
     /// Class Program.
@@ -52,8 +53,26 @@ namespace RabbitExpress.Example.RpcServer
 
             using (var qc = new QueueClient<Queues, MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                IExampleService tmp = null;
-                //qc.RpcServer(Queues.RPC_QUEUE, tmp.EncodeMessage,(ExampleMessage m) => m);
+                qc.RpcServer<IExampleService>(x => x.Process(new ExampleMessage()), new Action<ExampleMessage>(m =>
+                {
+                    Console.WriteLine($"Process {m.Text}");
+                }));
+                qc.RpcServer<IExampleService>(x => x.Calculate(1, 2), new Func<int, int, string>((i1, i2) =>
+                {
+                    Console.WriteLine($"Calculating {i1} + {i2}");
+                    return (i1 + i2).ToString();
+                }));
+                qc.RpcServer<IExampleService>(x => x.EncodeMessage(new ExampleMessage()), new Func<ExampleMessage, ExampleMessage>(m =>
+                {
+                    Console.WriteLine($"Encoding {m.Text}");
+                    return new ExampleMessage() { Text = Convert.ToBase64String(Encoding.UTF8.GetBytes(m.Text)) };
+                }));
+                qc.RpcServer<IExampleService>(x => x.DecodeMessage(new ExampleMessage()), new Func<ExampleMessage, ExampleMessage>(m =>
+                {
+                    Console.WriteLine($"Decoding {m.Text}");
+                    return new ExampleMessage() { Text = Encoding.UTF8.GetString(Convert.FromBase64String(m.Text)) };
+                }));
+                Console.ReadLine();
             }
         }
     }
