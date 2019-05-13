@@ -53,9 +53,9 @@ namespace RabbitExpress.Example.RpcClient
             using (var qc = new QueueClient<MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
                 IExampleService client = qc.RpcClient<IExampleService>();
+                Console.WriteLine(client.Calculate(2, 4));
                 var input = new ExampleMessage { Text = "RabbitExpress Test" };
                 client.Process(input);
-                Console.WriteLine(client.Calculate(2, 4));
                 ExampleMessage msg = client.EncodeMessage(input);
                 Console.WriteLine(msg.Text);
                 ExampleMessage decmsg = client.DecodeMessage(msg);

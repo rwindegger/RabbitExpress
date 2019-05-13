@@ -53,14 +53,14 @@ namespace RabbitExpress.Example.RpcServer
 
             using (var qc = new QueueClient<MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
             {
-                qc.RpcServer<IExampleService>(x => x.Process(new ExampleMessage()), new Action<ExampleMessage>(m =>
-                {
-                    Console.WriteLine($"Process {m.Text}");
-                }));
                 qc.RpcServer<IExampleService>(x => x.Calculate(1, 2), new Func<int, int, string>((i1, i2) =>
                 {
                     Console.WriteLine($"Calculating {i1} + {i2}");
                     return (i1 + i2).ToString();
+                }));
+                qc.RpcServer<IExampleService>(x => x.Process(new ExampleMessage()), new Action<ExampleMessage>(m =>
+                {
+                    Console.WriteLine($"Process {m.Text}");
                 }));
                 qc.RpcServer<IExampleService>(x => x.EncodeMessage(new ExampleMessage()), new Func<ExampleMessage, ExampleMessage>(m =>
                 {
