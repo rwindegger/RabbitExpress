@@ -28,11 +28,12 @@
 // ***********************************************************************
 namespace RabbitExpress
 {
-    using Castle.DynamicProxy;
     using MsgPack.Serialization;
     using RabbitMQ.Client;
     using RabbitMQ.Client.Events;
     using RabbitMQ.Client.Framing;
+    using SexyProxy;
+    using SexyProxy.Emit;
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
@@ -51,7 +52,6 @@ namespace RabbitExpress
     /// <seealso cref="System.IDisposable" />
     public class QueueClient<TSerializer>
         : IDisposable
-        , IInterceptor
         where TSerializer : IExpressSerializer, new()
     {
         private const string Exchange = "RabbitExpress";
@@ -290,7 +290,7 @@ namespace RabbitExpress
         public TInterface RpcClient<TInterface>()
             where TInterface : class
         {
-            return (new ProxyGenerator()).CreateInterfaceProxyWithoutTarget<TInterface>(this);
+            return Proxy.CreateProxy<TInterface>(Intercept, asyncMode: AsyncInvocationMode.Wait);
         }
 
         /// <summary>
@@ -355,8 +355,10 @@ namespace RabbitExpress
         /// Intercepts the specified invocation.
         /// </summary>
         /// <param name="invocation">The invocation.</param>
-        public void Intercept(IInvocation invocation)
+        public async Task<object> Intercept(Invocation invocation)
         {
+            await Task.Yield();
+
             var correlationId = Guid.NewGuid().ToString();
 
             var h = new
@@ -372,13 +374,19 @@ namespace RabbitExpress
                 object result = null;
                 var handler = new Func<byte[], WorkerResult>(d =>
                 {
-                    result = _serializer.Deserialize(invocation.Method.ReturnType, d);
+                    var type = invocation.Method.ReturnType;
+                    if (type.IsTaskT())
+                    {
+                        type = invocation.Method.ReturnType.GenericTypeArguments[0];
+                    }
+
+                    result = _serializer.Deserialize(type, d);
                     @event.Set();
                     return WorkerResult.Success;
                 });
 
                 if (!_pending.TryAdd(correlationId, handler))
-                    return;
+                    return null;
 
                 var props = new BasicProperties
                 {
@@ -396,18 +404,21 @@ namespace RabbitExpress
                     props.ReplyTo = _queue;
                 }
 
-                var req = new RpcRequest { Arguments = invocation.Arguments };
-                _model.BasicPublish(Exchange, string.Empty, props, _serializer.Serialize(req));
-
-                if (invocation.Method.ReturnType == typeof(void))
+                return await Task.Run(async () =>
                 {
-                    _pending.TryRemove(correlationId, out Func<byte[], WorkerResult> _);
-                    invocation.ReturnValue = null;
-                    return;
-                }
+                    var req = new RpcRequest { Arguments = invocation.Arguments };
+                    _model.BasicPublish(Exchange, string.Empty, props, _serializer.Serialize(req));
 
-                @event.WaitOne();
-                invocation.ReturnValue = result;
+                    if (invocation.Method.ReturnType == typeof(void))
+                    {
+                        _pending.TryRemove(correlationId, out Func<byte[], WorkerResult> _);
+                        return null;
+                    }
+
+                    await Task.Yield();
+                    @event.WaitOne();
+                    return result;
+                });
             }
         }
 

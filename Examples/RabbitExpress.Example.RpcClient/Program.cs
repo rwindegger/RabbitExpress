@@ -32,36 +32,44 @@ namespace RabbitExpress.Example.RpcClient
     using Shared;
     using System;
     using System.IO;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Class Program.
     /// </summary>
     internal class Program
     {
+        private static IConfiguration _configuration;
+
+        private static async Task Test()
+        {
+            using (var qc = new QueueClient<MsgPackSerializer>(new Uri(_configuration["RabbitExpressConnection"])))
+            {
+                IExampleService client = qc.RpcClient<IExampleService>();
+                Console.WriteLine(client.Calculate(2, 4));
+                var input = new ExampleMessage { Text = "RabbitExpress Test" };
+                client.Process(input);
+                ExampleMessage msg = await client.EncodeMessage(input);
+                Console.WriteLine(msg.Text);
+                ExampleMessage decmsg = await client.DecodeMessage(msg);
+                Console.WriteLine(decmsg.Text);
+                Console.ReadLine();
+            }
+        }
+
         /// <summary>
         /// Defines the entry point of the application.
         /// </summary>
         /// <param name="args">The arguments.</param>
         private static void Main(string[] args)
         {
-            IConfiguration config = new ConfigurationBuilder()
+            _configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .AddEnvironmentVariables()
                 .Build();
 
-            using (var qc = new QueueClient<MsgPackSerializer>(new Uri(config["RabbitExpressConnection"])))
-            {
-                IExampleService client = qc.RpcClient<IExampleService>();
-                Console.WriteLine(client.Calculate(2, 4));
-                var input = new ExampleMessage { Text = "RabbitExpress Test" };
-                client.Process(input);
-                ExampleMessage msg = client.EncodeMessage(input);
-                Console.WriteLine(msg.Text);
-                ExampleMessage decmsg = client.DecodeMessage(msg);
-                Console.WriteLine(decmsg.Text);
-                Console.ReadLine();
-            }
+            Task.WaitAll(Test());
         }
     }
 }
