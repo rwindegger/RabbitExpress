@@ -30,3 +30,10 @@ For a simple example of a publisher see [RabbitExpress.Example.Publisher](Exampl
 
 For a simple worker implementation see [RabbitExpress.Example.Worker](Examples/RabbitExpress.Example.Worker/README.md).
 
+## RPC Client usage
+
+For a simple rpc client implementation see [RabbitExpress.Example.RpcClient](Examples/RabbitExpress.Example.RpcClient/README.md).
+
+## RPC Server usage
+
+For a simple rpc client implementation see [RabbitExpress.Example.RpcServer](Examples/RabbitExpress.Example.RpcServer/README.md).

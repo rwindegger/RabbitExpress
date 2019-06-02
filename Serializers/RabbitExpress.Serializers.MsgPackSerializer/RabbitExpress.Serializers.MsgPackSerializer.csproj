@@ -8,9 +8,10 @@
 		<Product>RabbitExpress</Product>
 		<Description>A simple MsgPack serializer implementation for usage in RabbitExpress.</Description>
 		<PackageLicenseUrl>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicenseUrl>
+		<PackageLicense>https://github.com/rwindegger/RabbitExpress/blob/master/LICENSE</PackageLicense>
 		<PackageProjectUrl>https://rwindegger.github.io/RabbitExpress/</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/rwindegger/RabbitExpress</RepositoryUrl>
-		<PackageTags>rabbitmq rabbitmq-client</PackageTags>
+		<PackageTags>rabbitmq rabbitmq-client microservice RPC Serialization MsgPack MessagePack</PackageTags>
 		<Version>99.99.99.99</Version>
 		<PackageVersion>99.99.99.99</PackageVersion>
 		<AssemblyVersion>99.99.99.99</AssemblyVersion>

@@ -28,6 +28,8 @@
 // ***********************************************************************
 namespace RabbitExpress.Example.Shared
 {
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Interface IExampleService
     /// </summary>
@@ -38,13 +40,13 @@ namespace RabbitExpress.Example.Shared
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>ExampleMessage.</returns>
-        ExampleMessage EncodeMessage(ExampleMessage message);
+        Task<ExampleMessage> EncodeMessage(ExampleMessage message);
         /// <summary>
         /// Decodes the message.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>ExampleMessage.</returns>
-        ExampleMessage DecodeMessage(ExampleMessage message);
+        Task<ExampleMessage> DecodeMessage(ExampleMessage message);
 
         /// <summary>Calculates the specified number1.</summary>
         /// <param name="number1">The number1.</param>
