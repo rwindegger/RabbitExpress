@@ -39,6 +39,7 @@ namespace RabbitExpress
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Security.Cryptography;
     using System.Text;
     using System.Threading;
@@ -161,6 +162,32 @@ namespace RabbitExpress
             var queueName = $"{ret} {name}({string.Join(", ", args)});";
             var buffer = _hasher.ComputeHash(Encoding.UTF8.GetBytes(queueName));
             return Convert.ToBase64String(buffer);
+        }
+
+        private void RegisterQueues<TInterface>()
+        {
+            var iType = typeof(TInterface);
+            var methods = iType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
+            foreach (var info in methods)
+            {
+                var h = new
+                {
+                    name = $"{info.DeclaringType?.FullName}.{info.Name}",
+                    args = info.GetParameters().Select(a => a.ParameterType.FullName).ToArray(),
+                    ret = info.ReturnType.FullName
+                };
+                var queueName = GetQueueIdentifier(h.ret, h.name, h.args);
+
+                var res = _model.QueueDeclare(queueName, true, false);
+                IDictionary<string, object> spec = new Dictionary<string, object>
+                {
+                    {"x-match", "all"},
+                    {"returnType", h.ret},
+                    {"signature", h.name},
+                    {"args", h.args}
+                };
+                _model.QueueBind(queueName, Exchange, string.Empty, spec);
+            }
         }
 
         /// <summary>
@@ -290,6 +317,7 @@ namespace RabbitExpress
         public TInterface RpcClient<TInterface>()
             where TInterface : class
         {
+            RegisterQueues<TInterface>();
             return Proxy.CreateProxy<TInterface>(Intercept, asyncMode: AsyncInvocationMode.Wait);
         }
 
@@ -303,6 +331,7 @@ namespace RabbitExpress
         public void RpcServer<TInterface>(Expression<Action<TInterface>> method, Delegate implementation)
             where TInterface : class
         {
+            RegisterQueues<TInterface>();
             if (method.Body is MethodCallExpression callExpression)
             {
                 System.Reflection.MethodInfo info = callExpression.Method;
@@ -333,16 +362,6 @@ namespace RabbitExpress
                     return WorkerResult.Success;
                 }))
                 {
-                    _model.QueueDeclare(queueName, true, false);
-                    IDictionary<string, object> spec = new Dictionary<string, object>
-                    {
-                        {"x-match", "all"},
-                        {"returnType", h.ret},
-                        {"signature", h.name},
-                        {"args", h.args}
-                    };
-                    _model.QueueBind(queueName, Exchange, string.Empty, spec);
-
                     _model.BasicConsume(queueName, false, _consumer);
 
                     return;
