@@ -71,39 +71,53 @@ namespace RabbitExpress
 
         private void HandleMessage(Func<byte[], WorkerResult> handler, BasicDeliverEventArgs @event)
         {
-            WorkerResult res = handler(@event.Body);
-            switch (res)
+            try
             {
-                case WorkerResult.Success:
-                    Acknowledge(@event.DeliveryTag);
-                    break;
-                case WorkerResult.Requeue:
-                    Reject(@event.DeliveryTag);
-                    break;
-                case WorkerResult.Failed:
-                    Reject(@event.DeliveryTag, false);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                WorkerResult res = handler(@event.Body);
+                switch (res)
+                {
+                    case WorkerResult.Success:
+                        Acknowledge(@event.DeliveryTag);
+                        break;
+                    case WorkerResult.Requeue:
+                        Reject(@event.DeliveryTag);
+                        break;
+                    case WorkerResult.Failed:
+                        Reject(@event.DeliveryTag, false);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch
+            {
+                Reject(@event.DeliveryTag);
             }
         }
 
         private void HandleMessage(Func<BasicDeliverEventArgs, WorkerResult> handler, BasicDeliverEventArgs @event)
         {
-            WorkerResult res = handler(@event);
-            switch (res)
+            try
             {
-                case WorkerResult.Success:
-                    Acknowledge(@event.DeliveryTag);
-                    break;
-                case WorkerResult.Requeue:
-                    Reject(@event.DeliveryTag);
-                    break;
-                case WorkerResult.Failed:
-                    Reject(@event.DeliveryTag, false);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                WorkerResult res = handler(@event);
+                switch (res)
+                {
+                    case WorkerResult.Success:
+                        Acknowledge(@event.DeliveryTag);
+                        break;
+                    case WorkerResult.Requeue:
+                        Reject(@event.DeliveryTag);
+                        break;
+                    case WorkerResult.Failed:
+                        Reject(@event.DeliveryTag, false);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch
+            {
+                Reject(@event.DeliveryTag);
             }
         }
 
@@ -166,9 +180,9 @@ namespace RabbitExpress
 
         private void RegisterQueues<TInterface>()
         {
-            var iType = typeof(TInterface);
-            var methods = iType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
-            foreach (var info in methods)
+            Type iType = typeof(TInterface);
+            MethodInfo[] methods = iType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
+            foreach (MethodInfo info in methods)
             {
                 var h = new
                 {
@@ -178,7 +192,7 @@ namespace RabbitExpress
                 };
                 var queueName = GetQueueIdentifier(h.ret, h.name, h.args);
 
-                var res = _model.QueueDeclare(queueName, true, false);
+                QueueDeclareOk res = _model.QueueDeclare(queueName, true, false);
                 IDictionary<string, object> spec = new Dictionary<string, object>
                 {
                     {"x-match", "all"},
@@ -393,7 +407,7 @@ namespace RabbitExpress
                 object result = null;
                 var handler = new Func<byte[], WorkerResult>(d =>
                 {
-                    var type = invocation.Method.ReturnType;
+                    Type type = invocation.Method.ReturnType;
                     if (type.IsTaskT())
                     {
                         type = invocation.Method.ReturnType.GenericTypeArguments[0];
