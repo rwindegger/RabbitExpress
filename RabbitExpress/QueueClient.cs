@@ -28,6 +28,7 @@
 // ***********************************************************************
 namespace RabbitExpress
 {
+    using Microsoft.Extensions.Options;
     using MsgPack.Serialization;
     using RabbitMQ.Client;
     using RabbitMQ.Client.Events;
@@ -209,14 +210,42 @@ namespace RabbitExpress
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         public QueueClient(Uri connectionString)
+            : this(new ConnectionFactory() { Uri = connectionString, DispatchConsumersAsync = true })
         {
             var factory = new ConnectionFactory()
             {
                 Uri = connectionString,
                 DispatchConsumersAsync = true
             };
+        }
 
-            _connection = factory.CreateConnection();
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QueueClient{TSerializer}"/> class.
+        /// </summary>
+        /// <param name="config">The connection setting.</param>
+        public QueueClient(IOptions<QueueConfig> config)
+            : this(config.Value.ConnectionString)
+        {
+            _model.BasicQos(0, config.Value.PrefetchSize, false);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QueueClient{TSerializer}"/> class.
+        /// </summary>
+        /// <param name="config">The connection setting.</param>
+        public QueueClient(QueueConfig config)
+            : this(config.ConnectionString)
+        {
+            _model.BasicQos(0, config.PrefetchSize, false);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="QueueClient{TSerializer}"/> class.
+        /// </summary>
+        /// <param name="connectionFactory">The connection factory used to create the connection.</param>
+        public QueueClient(IConnectionFactory connectionFactory)
+        {
+            _connection = connectionFactory.CreateConnection();
             _model = _connection.CreateModel();
 
             _consumer = new AsyncEventingBasicConsumer(_model);
