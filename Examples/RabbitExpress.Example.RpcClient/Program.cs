@@ -39,11 +39,13 @@ namespace RabbitExpress.Example.RpcClient
     /// </summary>
     internal class Program
     {
-        private static IConfiguration _configuration;
+        private static IConfigurationRoot _configuration;
 
         private static async Task Test()
         {
-            using (var qc = new QueueClient<MsgPackSerializer>(new Uri(_configuration["RabbitExpressConnection"])))
+            var qConfig = new QueueConfig();
+            _configuration.GetSection("RabbitExpress").Bind(qConfig);
+            using (var qc = new QueueClient<MsgPackSerializer>(qConfig))
             {
                 IExampleService client = qc.RpcClient<IExampleService>();
                 Console.WriteLine(client.Calculate(2, 4));
