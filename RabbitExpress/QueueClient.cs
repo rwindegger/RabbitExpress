@@ -163,13 +163,12 @@ namespace RabbitExpress
                     HandleMessage(rpcHandler, @event);
                     return;
                 }
-
-                Reject(@event.DeliveryTag);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+            Reject(@event.DeliveryTag);
         }
 
         private string GetQueueIdentifier(string ret, string name, string[] args)
@@ -193,7 +192,7 @@ namespace RabbitExpress
                 };
                 var queueName = GetQueueIdentifier(h.ret, h.name, h.args);
 
-                QueueDeclareOk res = _model.QueueDeclare(queueName, true, false);
+                QueueDeclareOk res = _model.QueueDeclare(queueName, true, false, false);
                 IDictionary<string, object> spec = new Dictionary<string, object>
                 {
                     {"x-match", "all"},
@@ -210,13 +209,8 @@ namespace RabbitExpress
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         public QueueClient(Uri connectionString)
-            : this(new ConnectionFactory() { Uri = connectionString, DispatchConsumersAsync = true })
+            : this(new ConnectionFactory() { Uri = connectionString, DispatchConsumersAsync = true, RequestedHeartbeat = 10 })
         {
-            var factory = new ConnectionFactory()
-            {
-                Uri = connectionString,
-                DispatchConsumersAsync = true
-            };
         }
 
         /// <summary>
@@ -224,9 +218,8 @@ namespace RabbitExpress
         /// </summary>
         /// <param name="config">The connection setting.</param>
         public QueueClient(IOptions<QueueConfig> config)
-            : this(config.Value.ConnectionString)
+            : this(config.Value)
         {
-            _model.BasicQos(0, config.Value.PrefetchSize, false);
         }
 
         /// <summary>
@@ -290,7 +283,7 @@ namespace RabbitExpress
                 }
             }))
             {
-                _model.QueueDeclare(queueName, true, false);
+                _model.QueueDeclare(queueName, true, false, false);
                 IDictionary<string, object> spec = new Dictionary<string, object>
                 {
                     { "x-match", "all" },
@@ -377,7 +370,7 @@ namespace RabbitExpress
             RegisterQueues<TInterface>();
             if (method.Body is MethodCallExpression callExpression)
             {
-                System.Reflection.MethodInfo info = callExpression.Method;
+                MethodInfo info = callExpression.Method;
                 var h = new
                 {
                     name = $"{info.DeclaringType?.FullName}.{info.Name}",
@@ -406,7 +399,6 @@ namespace RabbitExpress
                 }))
                 {
                     _model.BasicConsume(queueName, false, _consumer);
-
                     return;
                 }
             }
