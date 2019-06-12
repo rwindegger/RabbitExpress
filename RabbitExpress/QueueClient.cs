@@ -129,7 +129,7 @@ namespace RabbitExpress
                 await Task.Yield();
 
                 // Handle pending RPC Requests
-                if (@event.BasicProperties.CorrelationId != null && _pending.TryGetValue(@event.BasicProperties.CorrelationId, out Func<byte[], WorkerResult> handler))
+                if (@event.BasicProperties.CorrelationId != null && _pending.TryRemove(@event.BasicProperties.CorrelationId, out Func<byte[], WorkerResult> handler))
                 {
                     HandleMessage(handler, @event);
                     return;
